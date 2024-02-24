@@ -15,7 +15,7 @@ const saltRounds = 10;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.use(upload.single('eventImage'));  // Move Multer middleware here
+app.use(upload.single('eventImage'));  
 
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
@@ -81,7 +81,7 @@ passport.use('admin', new LocalStrategy({
 
 // users
 passport.use('user', new LocalStrategy({
-  usernameField: 'email',  // Ensure this matches the name attribute in your login form
+  usernameField: 'email',  
   passwordField: 'password'
 }, (username, password, done) => {
   User.findOne({ where: { email: username } })
@@ -333,8 +333,6 @@ app.post('/adminsignupsubmit', async (req, res) => {
 
   try {
 
-    // Using Sequelize's create method to add admin
-
     const admins = await admin.addAdmin({
       firstname: req.body.firstName,
       lastname: req.body.lastName,
@@ -427,8 +425,7 @@ app.post("/register_:id", ensureLoggedIn, async (req, res) => {
       }
 
       event = result.rows[0];
-
-      // Concatenate the new user ID to the existing string of user IDs
+      
       if (!event.registered_users) {
         event.registered_users = userId.toString();
       } else {

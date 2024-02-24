@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "1234",
+    "database": "Event",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging":false
+  },
+  "test": {
+    "username": "postgres",
+    "password": "1234",
+    "database": "Event_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "1234",
+    "database": "Event_prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: none;
+            border: 0;
+            outline: 1px solid;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 20px;
+
+        }
+        button:hover{
+            transition: 0.4s all;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+            background-color: blue;
+            color: white;
+            border-radius: 20px;
+        }
+        .nav{
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            gap: 30px;
+        }
+        .nav a{
+            text-decoration: none;
+            color: white;
+           
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div><h1>Event Management System</h1></div>
+        <div class="nav">
+            <a href="/event" style="text-decoration: line-through;">Create Event</a>
+            <a href="/home">Home</a>
+            <a href="">About Us</a>
+            <a href="">Contact Us</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+    
+    <main>
+        <form id="eventForm" action="/addtask" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+            <label for="eventName">Event Name:</label>
+            <input type="text" id="eventName" name="eventName" required>
+
+            <label for="eventLocation">Event Location:</label>
+            <input type="text" id="eventLocation" name="eventLocation" required>
+
+            <label for="eventDate">Event Date:</label>
+            <input type="date" id="eventDate" name="eventDate" required>
+
+            <label for="eventDescription">Event Description:</label>
+            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+
+            <label for="eventImage">Event Image:</label>
+            <input type="file" id="eventImage" name="eventImage" accept="image/*">
+
+            <button type="submit">Create Event</button>
+        </form>
+<!-- 
+        <div id="eventList"></div> -->
+    </main>
+
+</body>
+</html>
+

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Card</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em 0;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-card {
+      border: 1px solid #ddd;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    button:not(.button1) {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transition: 0.4s all;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+      border-radius: 20px;
+    }
+
+    .nav {
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+    }
+
+    center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      position: relative;
+      /* Added for positioning */
+      height: 500px;
+      width: 350px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .img img {
+      height: 15rem;
+      width: 100%;
+      border-bottom-left-radius: 25%;
+      border-bottom-right-radius: 25%;
+      object-fit: cover;
+    }
+
+    .info {
+      position: absolute;
+      bottom: 0;
+      /* Align to the bottom */
+      left: 0;
+      /* Align to the left */
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      /* Include padding in width calculation */
+      background-color: rgba(255, 255, 255, 0.8);
+      /* Semi-transparent background for better readability */
+    }
+
+    h2 {
+      color: #000044;
+      margin-bottom: 10px;
+    }
+
+    .location,
+    .date {
+      display: flex;
+      gap: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      row-gap: 30px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      margin: auto;
+      width: 80%;
+      margin-top: 20px;
+      padding: 30px;
+    }
+
+    .modal-body input {
+      border: 1px solid black;
+    }
+    .expired-message{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      text-align: center;
+      border: 2px solid white;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: rgb(255, 255, 255);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 12;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Event Management System</h1>
+    </div>
+    <div class="nav">
+      <a href="/event">Create Event</a>
+      <a href="/home" style="text-decoration: line-through">Home</a>
+      <a href="">About Us</a>
+      <a href="/contact">Contact Us</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+  <div style="margin: auto;  max-width: 960px;">
+    <% if (messages && messages.success && messages.success.length> 0) { %>
+      <% for(var i=0; i<messages.success.length; i++) { %>
+        <div class="alert alert-success" role="alert">
+          <%= messages.success[i] %>
+        </div>
+        <% } %>
+          <% } %>
+     <% if (messages && messages.delete && messages.delete.length> 0) { %>
+            <% for(var i=0; i<messages.delete.length; i++) { %>
+              <div class="alert alert-success" role="alert">
+                <%= messages.delete[i] %>
+              </div>
+              <% } %>
+      <% } %>
+       <% if (messages && messages.cancel && messages.cancel.length> 0) { %>
+                  <% for(var i=0; i<messages.cancel.length; i++) { %>
+                    <div class="alert alert-success" role="alert">
+                      <%= messages.cancel[i] %>
+                    </div>
+                    <% } %>
+         <% } %>
+  </div>
+
+  <% if (Data.length> 0) { %>
+    <div class="row">
+      <% Data.forEach(function(data) { %>
+        <div class="card" style="position: relative; ">
+          
+          <% // Check if the event date has passed
+          const eventDate = new Date(data.date);
+          const currentDate = new Date();
+          if (eventDate < currentDate) { %>
+            <div class="expired-message">
+              Event Completed
+            </div>
+          <% } %>
+          <div class="img">
+            <% if (data.Image) { %>
+              <img src="data:image/png;base64,<%= data.Image.toString('base64') %>" alt="Event Image" />
+              <% } else { %>
+                <img src="https://tse2.mm.bing.net/th?id=OIP.4Axc19GL2wQbBYvfcn2IIgHaEo&pid=Api&P=0&h=180"
+                  alt="Default Image" />
+                <% } %>
+          </div>
+          <div class="info">
+            <% 
+                   // Pass event date to client-side JavaScript
+                  const time = new Date(data.date);
+                  const name= data.name;
+             %>
+             <% if (eventDate < currentDate) { %>
+              <p></p>
+            <% } else { %>
+              <p id="innerTime_<%= data.id %>"></p>
+            <% } %>
+             <script>
+
+              function updateCountdown() {
+                // access name value from ejs to js
+                const Name='<%=  name %>';
+                // console.log(Name);
+                const eventDate = new Date("<%= time.toISOString() %>");
+                const currentDate = new Date();
+                let timeDifference = eventDate.getTime() - currentDate.getTime();
+                const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                const hoursDifference = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutesDifference = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                const secondsDifference = Math.floor((timeDifference % (1000 * 60)) / 1000);
+                
+                document.getElementById("innerTime_<%= data.id %>").innerHTML = `Event ends in ${daysDifference}d : ${hoursDifference}h : ${minutesDifference}m : ${secondsDifference}s`;
+                
+                // Decrease time by one second
+                timeDifference -= 1000;
+              }
+              
+              // Call updateCountdown initially to set up the initial display
+              updateCountdown();
+              
+              // Update the countdown every second
+              setInterval(updateCountdown, 1000);
+            </script>
+            <h2 style="display: flex; justify-content: center; align-items: center">
+              <%= data.name %>
+            </h2>
+            <div class="location">
+              <i class="fas fa-location-dot"></i>
+              <p>
+                <%= data.loc %>
+              </p>
+            </div>
+            <div class="date">
+              <i class="fas fa-calendar-days"></i>
+              <p>
+                <%= data.date %>
+              </p>
+            </div>
+            <div class="cont" style="height: 30px; display: flex; justify-content: space-between">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2_<%= data.id %>">Event
+                Information</a><br>
+              <form action="/delete_<%= data.id %>" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button type="submit" style="background: none; border: none; cursor: pointer">
+                  <i class="fa-solid fa-trash" style="color: #000000"></i>
+                </button>
+              </form>
+            </div>
+            <% if (eventDate < currentDate) { %>
+              <p style="color: red;">Registrations are closed</p>
+            <% } else { %>
+              <% if (count == -1) { %>
+                <a href=""></a>
+              <% } else if (data.registered_users.includes(String(userid)))  { %>
+                <form action="/cancel_<%= data.id %>" method="post">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                   <button class="button1" type="submit" style="border: none; background: none; color: red; margin-left: -8px; font-weight: 600;">Cancel Registration</button>
+               </form>
+                <% } else{ %>  
+                      <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal3">Register Now</a>
+               <% } %> 
+            <% } %>            
+          </div>
+          <div class="modal" id="exampleModal2_<%= data.id %>" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- <h5 class="modal-title">Modal title</h5> -->
+                  <p id="message1"></p>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h3>
+                    <%= data.name %>
+                  </h3>
+                  <p>
+                    <%= data.info %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal border border-success" id="exampleModal3" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- <h5 class="modal-title">Modal title</h5> -->
+                  <p id="message1"></p>
+                  <h2 class="d-flex justify-content-center">Register For free</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <!-- registration form  -->
+                  <form class="row g-3 needs-validation" novalidate action="/register_<%= data.id %>" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <div class="col-md-6 position-relative">
+                      <label for="validationTooltip01" class="form-label">First name</label>
+                      <input type="text" class="form-control" id="validationTooltip01" name="fname" required>
+                      <div class="valid-tooltip">
+                        Looks good!
+                      </div>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                      <label for="validationTooltip02" class="form-label">Last name</label>
+                      <input type="text" class="form-control" id="validationTooltip02" name="lname" required>
+                      <div class="valid-tooltip">
+                        Looks good!
+                      </div>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                      <label for="validationTooltip03" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="validationTooltip03" name="email" required>
+                      <div class="valid-tooltip">
+                        Looks good!
+                      </div>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                      <label for="validationTooltip03" class="form-label">Mobile no</label>
+                      <input type="number" class="form-control" id="validationTooltip03" name="mobileno" required>
+                      <div class="invalid-tooltip">
+                        Please provide a valid city.
+                      </div>
+                    </div>
+                    <div class="col-md-3 position-relative">
+                      <label for="validationTooltip04" class="form-label">Branch</label>
+                      <select class="form-select" id="validationTooltip04" name="branch" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option name="IT">IT</option>
+                        <option name="CSE">CSE</option>
+                        <option name="ECE">ECE</option>
+                        <option name="MECH">MECH</option>
+                        <option name="EEE">EEE</option>
+                        <option name="CIVIL">CIVIL</option>
+
+                      </select>
+                      <div class="invalid-tooltip">
+                        Please select a valid state.
+                      </div>
+                    </div>
+                    <div class="col-md-3 position-relative">
+                      <label for="validationTooltip05" class="form-label">Year</label>
+                      <input type="number" class="form-control" id="validationTooltip05" name="year" required>
+                      <div class="invalid-tooltip">
+                        Please provide a valid zip.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <% } else { %>
+      <div style="text-align: center; margin-top: 50px;">
+        <h2 style="font-weight: 900; font-size: 4em; font-style:oblique; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">No events are available at the moment.</h2>
+        <!-- <img src="https://duporthtavern.com/wp-content/uploads/2019/06/No-Upcoming-Events.png" alt="" > -->
+      </div>
+      <% } %>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

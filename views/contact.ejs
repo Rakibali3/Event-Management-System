@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .nav {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        gap: 30px;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: white;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1em 0;
+      }
+
+      .heading {
+        margin: auto;
+        text-align: center;
+      }
+      .info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .info1 {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      input {
+        width: 25rem;
+        height: 2.5em;
+      }
+      .button1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+      }
+      button {
+        height: 40px;
+        width: 180px;
+        background-color: #0088cc;
+        border: none;
+        cursor: pointer;
+        color: white;
+      }
+      .main {
+        margin-top: 100px;
+      }
+      ::placeholder {
+        padding: 10px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Event Management System</h1>
+      </div>
+      <div class="nav">
+        <a href="/event">Create Event</a>
+        <a href="/home">Home</a>
+        <a href="">About Us</a>
+        <a href="/contact"  style="text-decoration: line-through">Contact Us</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </header>
+    <div class="main">
+      <div class="heading">
+        <h1>Contact Us</h1>
+      </div>
+      <form action="/contacts" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <div class="info">
+          <div class="info1">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="email" placeholder="Email" />
+            <input type="text" name="Subject" placeholder="Subject" />
+          </div>
+          <div class="info2">
+            <textarea
+              id=""
+              cols="43"
+              rows="9"
+              name="message"
+              placeholder="Message"
+            ></textarea>
+          </div>
+        </div>
+        <div class="button1"><button type="submit">Submit</button></div>
+      </form>
+    </div>
+  </body>
+</html>

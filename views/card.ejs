@@ -211,7 +211,6 @@
           </div>
           <div class="info">
             <% 
-                   // Pass event date to client-side JavaScript
                   const time = new Date(data.date);
                   const name= data.name;
              %>
@@ -240,7 +239,7 @@
                 timeDifference -= 1000;
               }
               
-              // Call updateCountdown initially to set up the initial display
+              
               updateCountdown();
               
               // Update the countdown every second
